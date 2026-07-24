@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from config import settings
 
-# Create the SQLAlchemy engine
+# Create the SQLAlchemy engine with pool_pre_ping=True for resilient connections
 engine = create_engine(settings.database_url, pool_pre_ping=True)
 
 # Session factory
