@@ -26,21 +26,11 @@ app = FastAPI(
 # CORS — allow Next.js frontend across Vercel production/preview deployments & local dev origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:3002",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-        "http://127.0.0.1:3002",
-        "https://wild-guard-kt9g9vkob-vedhavk2004-6841s-projects.vercel.app",
-    ],
-    allow_origin_regex=r"https://wild-guard.*\.vercel\.app|https://.*\.vercel\.app|http://(localhost|127\.0\.0\.1):\d+",
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Serve uploaded images as static files
 uploads_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
 os.makedirs(uploads_dir, exist_ok=True)
