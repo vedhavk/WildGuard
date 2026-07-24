@@ -17,7 +17,7 @@ export default function SafetyGuidesPage() {
     <div className="page-container">
       <div className="section-header">
         <h1>
-          <BookOpen size={18} inline style={{ marginRight: "6px", verticalAlign: "middle" }} />
+          <BookOpen size={18} style={{ marginRight: "6px", verticalAlign: "middle" }} />
           WILDLIFE SAFETY FIELD PROTOCOLS & HOTLINES
         </h1>
         <p>Offline-cached field safety protocols and 24/7 control room emergency contacts</p>
@@ -26,7 +26,7 @@ export default function SafetyGuidesPage() {
       {/* Emergency Hotlines Grid */}
       <div style={{ marginBottom: "2.5rem" }}>
         <div className="section-header" style={{ marginBottom: "1rem" }}>
-          <h2><PhoneCall size={16} inline style={{ marginRight: "6px" }} /> 24/7 CONTROL ROOM EMERGENCY DIRECTORY</h2>
+          <h2><PhoneCall size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> 24/7 CONTROL ROOM EMERGENCY DIRECTORY</h2>
         </div>
         <div className="grid-responsive">
           {contacts.map((c, idx) => (
@@ -49,7 +49,7 @@ export default function SafetyGuidesPage() {
 
       {/* Safety Protocols */}
       <div className="section-header" style={{ marginBottom: "1rem" }}>
-        <h2><ShieldAlert size={16} inline style={{ marginRight: "6px" }} /> SPECIES ENCOUNTER FIELD PROTOCOLS</h2>
+        <h2><ShieldAlert size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> SPECIES ENCOUNTER FIELD PROTOCOLS</h2>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {guides.map((g) => (

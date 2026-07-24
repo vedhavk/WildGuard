@@ -159,14 +159,14 @@ export default function EventDetailPage() {
         {/* Left Column: Timeline & Map */}
         <div>
           <div className="section-header">
-            <h2><MapPin size={16} inline style={{ marginRight: "6px" }} /> GEOSPATIAL MAP</h2>
+            <h2><MapPin size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> GEOSPATIAL MAP</h2>
           </div>
           <div className="map-container" style={{ height: "320px", marginBottom: "1.5rem" }}>
             <Map latitude={eventData.latitude} longitude={eventData.longitude} animal={eventData.species} />
           </div>
 
           <div className="section-header">
-            <h2><Layers size={16} inline style={{ marginRight: "6px" }} /> INCIDENT CHRONOLOGY TIMELINE</h2>
+            <h2><Layers size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> INCIDENT CHRONOLOGY TIMELINE</h2>
             <p>System AI detections, community reports, and official actions</p>
           </div>
           <EventTimeline timelines={eventData.timelines} />

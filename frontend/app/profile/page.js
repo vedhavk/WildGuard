@@ -97,7 +97,7 @@ export default function ProfilePage() {
   return (
     <div className="page-container">
       <div className="section-header">
-        <h1><User size={18} inline style={{ marginRight: "6px" }} /> PERSONAL SAFETY GEOFENCE & CONTRIBUTOR BADGES</h1>
+        <h1><User size={18} style={{ marginRight: "6px", verticalAlign: "middle" }} /> PERSONAL SAFETY GEOFENCE & CONTRIBUTOR BADGES</h1>
         <p>Private monitoring perimeter setup and reputation scoring</p>
       </div>
 
@@ -105,7 +105,7 @@ export default function ProfilePage() {
         {/* Left Column: Safety Geofence Settings */}
         <div className="card" style={{ padding: "1.25rem" }}>
           <div className="section-header">
-            <h2><MapPin size={16} inline style={{ marginRight: "6px" }} /> GEOFENCED SAFETY ROUTES</h2>
+            <h2><MapPin size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> GEOFENCED SAFETY ROUTES</h2>
           </div>
 
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerUser, getCurrentPosition, reverseGeocode } from "@/lib/api";
+import { Eye, EyeOff, MapPin, Loader2, CheckCircle2 } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -14,8 +15,10 @@ export default function RegisterPage() {
     phone: "",
     location: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [geoFetching, setGeoFetching] = useState(true);
   const [geoStatus, setGeoStatus] = useState("Fetching location...");
 
   // Auto-fetch location on mount
@@ -29,9 +32,11 @@ export default function RegisterPage() {
         };
         const geo = await reverseGeocode(lat, lng);
         setForm((prev) => ({ ...prev, location: geo.pincode }));
-        setGeoStatus(`Pincode: ${geo.pincode}`);
+        setGeoStatus(`Location detected: Pincode ${geo.pincode}`);
       } catch (err) {
-        setGeoStatus(err.message || "Could not get location — enter pincode manually");
+        setGeoStatus(err.message || "Could not auto-detect location — enter pincode manually");
+      } finally {
+        setGeoFetching(false);
       }
     }
     fetchLocation();
@@ -55,30 +60,64 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-page">
-      <div className="card auth-card fade-in">
-        <h1>Join Wild Guard</h1>
-        <p className="subtitle">Create your account to protect your community</p>
-
-        <div
-          className="alert-box"
-          style={{
-            background: "rgba(83,52,131,0.12)",
-            border: "1px solid rgba(83,52,131,0.3)",
-            color: "#a78bfa",
-          }}
-        >
-          {geoStatus}
+      <div className="auth-card fade-in">
+        {/* Header */}
+        <div className="auth-header">
+          <h1>Join Wild Guard</h1>
+          <p className="subtitle">Create your account to protect your community</p>
         </div>
 
-        {error && <div className="alert-box alert-error"> {error}</div>}
+        {/* Location Auto-detect Status Line */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "12px",
+            color: "#8B9598",
+            marginBottom: "1.25rem",
+            background: "#181D1F",
+            border: "1px solid #2A3134",
+            padding: "6px 10px",
+            borderRadius: "4px",
+          }}
+        >
+          {geoFetching ? (
+            <Loader2 size={13} className="spin" style={{ color: "#7FA084" }} />
+          ) : (
+            <MapPin size={13} style={{ color: "#7FA084" }} />
+          )}
+          <span>{geoStatus}</span>
+        </div>
+
+        {/* Error Alert */}
+        {error && (
+          <div
+            className="mono-code"
+            style={{
+              marginBottom: "1rem",
+              padding: "8px 12px",
+              background: "var(--red-bg)",
+              border: "1px solid var(--red-border)",
+              color: "var(--red-text)",
+              borderRadius: "4px",
+              fontSize: "12px",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Full Name</label>
+          {/* Full Name */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              FULL NAME
+            </label>
             <input
               id="register-name"
               type="text"
-              className="form-input"
+              className="auth-input"
               placeholder="John Doe"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -86,12 +125,15 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Email</label>
+          {/* Email */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              EMAIL ADDRESS
+            </label>
             <input
               id="register-email"
               type="email"
-              className="form-input"
+              className="auth-input"
               placeholder="you@example.com"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -99,25 +141,41 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              id="register-password"
-              type="password"
-              className="form-input"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-            />
+          {/* Password */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              PASSWORD
+            </label>
+            <div className="auth-input-wrapper">
+              <input
+                id="register-password"
+                type={showPassword ? "text" : "password"}
+                className="auth-input auth-input-icon-right"
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+              />
+              <button
+                type="button"
+                className="input-toggle-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Phone</label>
+          {/* Phone */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              PHONE NUMBER
+            </label>
             <input
               id="register-phone"
               type="tel"
-              className="form-input"
+              className="auth-input"
               placeholder="+91 98765 43210"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -125,29 +183,43 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Pincode (auto-detected)</label>
-            <input
-              id="register-pincode"
-              type="text"
-              className="form-input"
-              placeholder="560001"
-              value={form.location}
-              onChange={(e) => setForm({ ...form, location: e.target.value })}
-              required
-            />
+          {/* Pincode (auto-detected) */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              PINCODE (AUTO-DETECTED)
+            </label>
+            <div className="auth-input-wrapper">
+              <MapPin size={15} className="input-icon-left" />
+              <input
+                id="register-pincode"
+                type="text"
+                className="auth-input auth-input-icon-left"
+                placeholder="560001"
+                value={form.location}
+                onChange={(e) => setForm({ ...form, location: e.target.value })}
+                required
+              />
+            </div>
           </div>
 
+          {/* Submit Button */}
           <button
             id="register-submit"
             type="submit"
-            className="btn btn-primary btn-full"
+            className="auth-btn-primary"
             disabled={loading}
           >
-            {loading ? "Creating account..." : "Create Account"}
+            {loading ? (
+              <>
+                <Loader2 size={16} className="spin" /> Creating account...
+              </>
+            ) : (
+              "Create Account"
+            )}
           </button>
         </form>
 
+        {/* Footer Link Row */}
         <p className="auth-switch">
           Already have an account? <Link href="/login">Sign in</Link>
         </p>

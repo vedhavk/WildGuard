@@ -675,3 +675,181 @@ label.label {
   letter-spacing: 0.04em;
   text-align: center;
 }
+
+/* ── Auth Page & Card Styling ──────────────────────────────── */
+.auth-page {
+  min-height: calc(100vh - 52px);
+  background: #14181A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: #1B2023;
+  border: 1px solid #2A3134;
+  border-radius: 8px;
+  padding: 32px 36px;
+  box-shadow: none;
+}
+
+.auth-header {
+  margin-bottom: 1.5rem;
+}
+
+.auth-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ECEEEE;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.auth-header .subtitle {
+  font-size: 13px;
+  color: #8B9598;
+  margin: 0;
+}
+
+/* Role Toggle Switcher */
+.role-toggle {
+  display: flex;
+  background: #15191C;
+  border: 1px solid #2A3134;
+  border-radius: 4px;
+  padding: 3px;
+  margin-bottom: 1.25rem;
+}
+
+.role-toggle button {
+  flex: 1;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 3px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: #8B9598;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.role-toggle button.active {
+  background: #252D32;
+  color: #ECEEEE;
+  font-weight: 600;
+}
+
+/* Form Groups & Inputs */
+.auth-form-group {
+  margin-bottom: 1.1rem;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input {
+  width: 100%;
+  background: #181D1F;
+  border: 1px solid #2A3134;
+  border-radius: 4px;
+  padding: 10px 12px;
+  color: #ECEEEE;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-input:focus {
+  border-color: #7FA084;
+  box-shadow: 0 0 0 2px rgba(127, 160, 132, 0.15);
+}
+
+.auth-input-icon-left {
+  padding-left: 36px;
+}
+
+.auth-input-icon-right {
+  padding-right: 36px;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 10px;
+  color: #6E7679;
+  pointer-events: none;
+}
+
+.input-toggle-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #8B9598;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.input-toggle-btn:hover {
+  color: #ECEEEE;
+}
+
+/* Primary Auth Submit Button */
+.auth-btn-primary {
+  width: 100%;
+  background: #5F8566;
+  color: #0F1211;
+  border: none;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1.25rem;
+}
+
+.auth-btn-primary:hover:not(:disabled) {
+  background: #4B6E52;
+  color: #FFFFFF;
+}
+
+.auth-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Footer Link Row */
+.auth-switch {
+  text-align: center;
+  font-size: 13px;
+  color: #8B9598;
+  margin-top: 1.25rem;
+}
+
+.auth-switch a {
+  color: #7FA084;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}

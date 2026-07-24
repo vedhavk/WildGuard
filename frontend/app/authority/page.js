@@ -158,7 +158,7 @@ export default function AuthorityPage() {
         {/* Active Broadcasts Feed */}
         <div>
           <div className="section-header" style={{ marginBottom: "1rem" }}>
-            <h2><Radio size={16} inline style={{ marginRight: "6px" }} /> ACTIVE OFFICIAL BROADCASTS</h2>
+            <h2><Radio size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> ACTIVE OFFICIAL BROADCASTS</h2>
           </div>
           {broadcasts.length === 0 ? (
             <div className="empty-state">
@@ -194,7 +194,7 @@ export default function AuthorityPage() {
 
       {/* Incidents Management Table */}
       <div className="section-header" style={{ marginBottom: "1rem" }}>
-        <h2><ListFilter size={16} inline style={{ marginRight: "6px" }} /> INCIDENT VERIFICATION & TEAM DISPATCH</h2>
+        <h2><ListFilter size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> INCIDENT VERIFICATION & TEAM DISPATCH</h2>
       </div>
       {loading ? (
         <div className="spinner" />

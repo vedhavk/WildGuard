@@ -44,7 +44,7 @@ export default function IntelligencePage() {
     <div className="page-container">
       <div className="section-header">
         <h1>
-          <Activity size={18} inline style={{ marginRight: "6px", verticalAlign: "middle" }} />
+          <Activity size={18} style={{ marginRight: "6px", verticalAlign: "middle" }} />
           HISTORICAL WILDLIFE MOVEMENT STORIES & INSIGHTS
         </h1>
         <p>Anonymized regional activity trends, peak sighting hours, and conflict prevention logs</p>
@@ -78,7 +78,7 @@ export default function IntelligencePage() {
       <div className="alert-detail-grid">
         <div className="card" style={{ padding: "1.25rem" }}>
           <div className="mono-label" style={{ marginBottom: "12px" }}>
-            <BarChart2 size={12} inline style={{ marginRight: "4px" }} /> SPECIES INCIDENT DISTRIBUTION
+            <BarChart2 size={12} style={{ marginRight: "4px", verticalAlign: "middle" }} /> SPECIES INCIDENT DISTRIBUTION
           </div>
           {data?.species_distribution ? (
             <div className="mono-code" style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "12px" }}>
@@ -96,7 +96,7 @@ export default function IntelligencePage() {
 
         <div className="card" style={{ padding: "1.25rem" }}>
           <div className="mono-label" style={{ marginBottom: "12px" }}>
-            <Lock size={12} inline style={{ marginRight: "4px" }} /> CONSERVATION & PRIVACY ADVISORY
+            <Lock size={12} style={{ marginRight: "4px", verticalAlign: "middle" }} /> CONSERVATION & PRIVACY ADVISORY
           </div>
           <p style={{ fontSize: "12px", color: "var(--text-secondary)", lineHeight: 1.6 }}>
             Wild Guard strictly protects endangered species by anonymizing exact GPS coordinates in public summaries. High-precision telemetry data is restricted to authorized Forest Department personnel to prevent poaching risks while maintaining community safety.

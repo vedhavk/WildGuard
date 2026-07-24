@@ -4,11 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loginUser, loginAdmin } from "@/lib/api";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [role, setRole] = useState("user");
   const [form, setForm] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -39,34 +41,59 @@ export default function LoginPage() {
 
   return (
     <div className="auth-page">
-      <div className="card auth-card fade-in">
-        <h1>Welcome Back</h1>
-        <p className="subtitle">Sign in to Wild Guard</p>
+      <div className="auth-card fade-in">
+        {/* Header */}
+        <div className="auth-header">
+          <h1>Welcome back</h1>
+          <p className="subtitle">Sign in to Wild Guard</p>
+        </div>
 
+        {/* Role Toggle Switcher */}
         <div className="role-toggle">
           <button
+            type="button"
             className={role === "user" ? "active" : ""}
             onClick={() => setRole("user")}
           >
             User
           </button>
           <button
+            type="button"
             className={role === "admin" ? "active" : ""}
             onClick={() => setRole("admin")}
           >
-            Admin
+            Admin / Officer
           </button>
         </div>
 
-        {error && <div className="alert-box alert-error">{error}</div>}
+        {/* Error Alert */}
+        {error && (
+          <div
+            className="mono-code"
+            style={{
+              marginBottom: "1rem",
+              padding: "8px 12px",
+              background: "var(--red-bg)",
+              border: "1px solid var(--red-border)",
+              color: "var(--red-text)",
+              borderRadius: "4px",
+              fontSize: "12px",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Email</label>
+          {/* Email Field */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              EMAIL ADDRESS
+            </label>
             <input
               id="login-email"
               type="email"
-              className="form-input"
+              className="auth-input"
               placeholder="you@example.com"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -74,32 +101,52 @@ export default function LoginPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              id="login-password"
-              type="password"
-              className="form-input"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-            />
+          {/* Password Field */}
+          <div className="auth-form-group">
+            <label className="mono-label" style={{ color: "#767F82", display: "block", marginBottom: "6px" }}>
+              PASSWORD
+            </label>
+            <div className="auth-input-wrapper">
+              <input
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                className="auth-input auth-input-icon-right"
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+              />
+              <button
+                type="button"
+                className="input-toggle-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
 
+          {/* Submit Button */}
           <button
             id="login-submit"
             type="submit"
-            className="btn btn-primary btn-full"
+            className="auth-btn-primary"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? (
+              <>
+                <Loader2 size={16} className="spin" /> Signing in...
+              </>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 
+        {/* Footer Link Row */}
         <p className="auth-switch">
-          Don&apos;t have an account?{" "}
-          <Link href="/register">Register here</Link>
+          Don&apos;t have an account? <Link href="/register">Register here</Link>
         </p>
       </div>
     </div>

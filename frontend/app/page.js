@@ -229,7 +229,7 @@ export default function Home() {
         {intelligence && intelligence.movement_stories && (
           <div className="card" style={{ padding: "1.25rem", marginTop: "1rem" }}>
             <div className="section-header" style={{ marginBottom: "1rem" }}>
-              <h1><FileText size={16} inline style={{ marginRight: "6px" }} /> SECTOR MOVEMENT STORIES & HISTORICAL INSIGHTS</h1>
+              <h1><FileText size={16} style={{ marginRight: "6px", verticalAlign: "middle" }} /> SECTOR MOVEMENT STORIES & HISTORICAL INSIGHTS</h1>
               <p>Aggregated historical movement logs for conflict prevention</p>
             </div>
             <div
