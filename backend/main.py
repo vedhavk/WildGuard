@@ -23,7 +23,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS — allow Next.js frontend across all local dev origins
+# CORS — allow Next.js frontend across Vercel production/preview deployments & local dev origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -33,8 +33,9 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "http://127.0.0.1:3002",
+        "https://wild-guard-kt9g9vkob-vedhavk2004-6841s-projects.vercel.app",
     ],
-    allow_origin_regex=r"http://(localhost|127\.0\.0\.1):\d+",
+    allow_origin_regex=r"https://wild-guard.*\.vercel\.app|https://.*\.vercel\.app|http://(localhost|127\.0\.0\.1):\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
