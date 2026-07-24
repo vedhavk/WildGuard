@@ -1,4 +1,9 @@
-const API_BASE = "http://127.0.0.1:8000/api";
+const getApiBase = () => {
+  if (typeof window !== "undefined" && window.location.hostname) {
+    return `http://${window.location.hostname}:8000/api`;
+  }
+  return "http://localhost:8000/api";
+};
 
 /**
  * Helper to make authenticated API calls to the FastAPI backend.
@@ -17,10 +22,16 @@ async function apiFetch(endpoint, options = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  const res = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  let res;
+  try {
+    res = await fetch(`${getApiBase()}${endpoint}`, {
+      ...options,
+      headers,
+    });
+  } catch (err) {
+    console.warn(`API Connection error for ${endpoint}:`, err);
+    throw new Error(`Unable to connect to backend server (${endpoint}). Please ensure backend is running.`);
+  }
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: "Request failed" }));
@@ -95,7 +106,12 @@ export async function getAlerts() {
 
 export async function getAlert(id) {
   // Public endpoint — no auth needed
-  const res = await fetch(`${API_BASE}/alerts/${id}`);
+  let res;
+  try {
+    res = await fetch(`${getApiBase()}/alerts/${id}`);
+  } catch (err) {
+    throw new Error("Unable to connect to backend server");
+  }
   if (!res.ok) {
     throw new Error("Alert not found");
   }

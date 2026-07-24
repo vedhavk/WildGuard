@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getWildlifeIntelligence } from "@/lib/api";
+import { Activity, BarChart2, Lock, FileText, AlertTriangle } from "lucide-react";
 
 const DEFAULT_INTELLIGENCE = {
   total_incidents: 4,
@@ -42,24 +43,32 @@ export default function IntelligencePage() {
   return (
     <div className="page-container">
       <div className="section-header">
-        <h1>📊 Wildlife Movement Stories & Conservation Insights</h1>
-        <p>Anonymized regional activity trends, peak sighting hours, and conflict prevention intelligence</p>
+        <h1>
+          <Activity size={18} inline style={{ marginRight: "6px", verticalAlign: "middle" }} />
+          HISTORICAL WILDLIFE MOVEMENT STORIES & INSIGHTS
+        </h1>
+        <p>Anonymized regional activity trends, peak sighting hours, and conflict prevention logs</p>
       </div>
 
       {/* Movement Stories */}
-      <div className="card" style={{ padding: "2rem", marginBottom: "2.5rem", borderLeft: "5px solid #fbbf24" }}>
-        <h2 style={{ margin: "0 0 1rem", color: "#fbbf24" }}>📖 Sector Movement Stories</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div className="card" style={{ padding: "1.25rem", marginBottom: "1.5rem", borderLeft: "4px solid var(--amber-text)" }}>
+        <div className="mono-label" style={{ color: "var(--amber-text)", marginBottom: "8px" }}>
+          SECTOR MOVEMENT STORIES
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           {data?.movement_stories?.map((story, idx) => (
             <div
               key={idx}
               style={{
-                background: "rgba(255,255,255,0.03)",
-                padding: "1rem 1.25rem",
-                borderRadius: "8px",
+                background: "var(--bg-primary)",
+                padding: "0.85rem 1rem",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-sm)",
               }}
             >
-              <p style={{ margin: 0, fontSize: "0.95rem" }}>{story}</p>
+              <p className="mono-code" style={{ margin: 0, fontSize: "12px", color: "var(--text-primary)", lineHeight: 1.6 }}>
+                {story}
+              </p>
             </div>
           ))}
         </div>
@@ -67,29 +76,48 @@ export default function IntelligencePage() {
 
       {/* Analytics Breakdown */}
       <div className="alert-detail-grid">
-        <div className="card" style={{ padding: "1.75rem" }}>
-          <h2 style={{ margin: "0 0 1rem" }}>🐾 Species Distribution</h2>
+        <div className="card" style={{ padding: "1.25rem" }}>
+          <div className="mono-label" style={{ marginBottom: "12px" }}>
+            <BarChart2 size={12} inline style={{ marginRight: "4px" }} /> SPECIES INCIDENT DISTRIBUTION
+          </div>
           {data?.species_distribution ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div className="mono-code" style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "12px" }}>
               {Object.entries(data.species_distribution).map(([sp, count]) => (
                 <div key={sp} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ textTransform: "capitalize", fontWeight: 600 }}>{sp}</span>
-                  <span className="status-pill active">{count} Incidents</span>
+                  <span style={{ textTransform: "uppercase", fontWeight: 600 }}>{sp}</span>
+                  <span className="status-pill active">{count} INCIDENTS</span>
                 </div>
               ))}
             </div>
           ) : (
-            <p>No species breakdown available.</p>
+            <p className="mono-code">NO SPECIES BREAKDOWN RECORDED.</p>
           )}
         </div>
 
-        <div className="card" style={{ padding: "1.75rem" }}>
-          <h2 style={{ margin: "0 0 1rem" }}>🛡️ Conservation & Privacy Policy</h2>
-          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-            Wild Guard strictly protects endangered wildlife by anonymizing exact GPS coordinates in public summaries. Raw tracking data is accessible exclusively by authorized Forest Department personnel to prevent illegal poaching while keeping local human communities safe.
+        <div className="card" style={{ padding: "1.25rem" }}>
+          <div className="mono-label" style={{ marginBottom: "12px" }}>
+            <Lock size={12} inline style={{ marginRight: "4px" }} /> CONSERVATION & PRIVACY ADVISORY
+          </div>
+          <p style={{ fontSize: "12px", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+            Wild Guard strictly protects endangered species by anonymizing exact GPS coordinates in public summaries. High-precision telemetry data is restricted to authorized Forest Department personnel to prevent poaching risks while maintaining community safety.
           </p>
-          <div style={{ marginTop: "1rem", padding: "12px", background: "rgba(16,185,129,0.1)", borderRadius: "8px", border: "1px solid #10b981", color: "#34d399", fontSize: "0.85rem" }}>
-            💡 {data?.safety_advisory || "Stay alert during dusk hours along forest borders."}
+          <div
+            className="mono-code"
+            style={{
+              marginTop: "1rem",
+              padding: "10px 12px",
+              background: "var(--sage-bg)",
+              borderRadius: "var(--radius-sm)",
+              border: "1px solid var(--sage-border)",
+              color: "var(--sage-text)",
+              fontSize: "11px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <AlertTriangle size={13} />
+            <span>ADVISORY: {data?.safety_advisory || "STAY ALERT DURING DUSK HOURS ALONG FOREST BORDERS."}</span>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getOfflineQueue } from "@/lib/offlineStore";
+import { WifiOff, RefreshCw } from "lucide-react";
 
 export default function OfflineBanner() {
   const [isOffline, setIsOffline] = useState(false);
@@ -36,11 +37,11 @@ export default function OfflineBanner() {
 
   return (
     <div className="offline-banner">
-      <span>📡</span>
+      {isOffline ? <WifiOff size={14} /> : <RefreshCw size={14} />}
       <span>
         {isOffline
-          ? "You are currently OFFLINE. Offline Safety Guides & Contacts are active."
-          : `Online. ${queueCount} report(s) ready to synchronize.`}
+          ? "SYSTEM OFFLINE: OPERATING FROM LOCAL CACHED FIELD PROTOCOLS AND CONTACTS"
+          : `NETWORK RESTORED: ${queueCount} PENDING SIGHTING RECORD(S) READY TO SYNCHRONIZE.`}
       </span>
     </div>
   );

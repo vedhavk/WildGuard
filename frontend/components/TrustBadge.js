@@ -1,20 +1,25 @@
+import { Bot, Users, ShieldCheck } from "lucide-react";
+
 export default function TrustBadge({ status = "AI Detected", score = 60 }) {
   let badgeClass = "ai";
-  let icon = "🤖";
+  let label = "AI-DET";
+  let IconComponent = Bot;
 
   if (status === "Community Confirmed") {
     badgeClass = "community";
-    icon = "👥";
+    label = "COMM-CONF";
+    IconComponent = Users;
   } else if (status === "Authority Verified") {
     badgeClass = "authority";
-    icon = "🛡️";
+    label = "AUTH-VERIF";
+    IconComponent = ShieldCheck;
   }
 
   return (
     <span className={`trust-badge ${badgeClass}`}>
-      <span>{icon}</span>
-      <span>{status}</span>
-      <span style={{ opacity: 0.85 }}>({score}%)</span>
+      <IconComponent size={12} />
+      <span>{label}</span>
+      <span style={{ opacity: 0.75 }}>[{score}%]</span>
     </span>
   );
 }

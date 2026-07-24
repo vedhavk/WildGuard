@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getUserProfile, updateUserProfile, getCurrentPosition, reverseGeocode } from "@/lib/api";
+import { User, MapPin, Sliders, Award, Shield } from "lucide-react";
 
 const DEFAULT_PROFILE = {
   profile_id: 1,
@@ -96,39 +97,42 @@ export default function ProfilePage() {
   return (
     <div className="page-container">
       <div className="section-header">
-        <h1>👤 Personal Safety Profile & Badges</h1>
-        <p>Configure your private geofence routes and view your community reputation rank</p>
+        <h1><User size={18} inline style={{ marginRight: "6px" }} /> PERSONAL SAFETY GEOFENCE & CONTRIBUTOR BADGES</h1>
+        <p>Private monitoring perimeter setup and reputation scoring</p>
       </div>
 
       <div className="alert-detail-grid">
         {/* Left Column: Safety Geofence Settings */}
-        <div className="card" style={{ padding: "1.75rem" }}>
-          <h2 style={{ margin: "0 0 1rem" }}>📍 Geofenced Safety Routes</h2>
+        <div className="card" style={{ padding: "1.25rem" }}>
+          <div className="section-header">
+            <h2><MapPin size={16} inline style={{ marginRight: "6px" }} /> GEOFENCED SAFETY ROUTES</h2>
+          </div>
 
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                <label className="label">Home / Primary Sector Address</label>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <label className="label">HOME / PRIMARY SECTOR LOCATION</label>
                 <button
                   type="button"
                   onClick={handleAutoDetectHome}
-                  style={{ background: "none", border: "none", color: "var(--accent)", cursor: "pointer", fontSize: "0.8rem" }}
+                  className="mono-code"
+                  style={{ background: "none", border: "none", color: "var(--accent-link)", cursor: "pointer", fontSize: "11px" }}
                 >
-                  📍 Use Current GPS
+                  <MapPin size={10} /> AUTO-DETECT GPS
                 </button>
               </div>
               <input
                 type="text"
                 className="input"
-                placeholder="e.g. Forest Edge Estate, Sector 4"
+                placeholder="E.G. FOREST EDGE ESTATE, SECTOR 4"
                 value={homeAddress}
                 onChange={(e) => setHomeAddress(e.target.value)}
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }}>
               <div>
-                <label className="label">Home Latitude</label>
+                <label className="label">HOME LATITUDE</label>
                 <input
                   type="number"
                   step="any"
@@ -139,7 +143,7 @@ export default function ProfilePage() {
                 />
               </div>
               <div>
-                <label className="label">Home Longitude</label>
+                <label className="label">HOME LONGITUDE</label>
                 <input
                   type="number"
                   step="any"
@@ -152,73 +156,76 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="label">Workplace / Travel Route Address</label>
+              <label className="label">WORKPLACE / PATROL ROUTE</label>
               <input
                 type="text"
                 className="input"
-                placeholder="e.g. Tea Factory Road / Forest Office"
+                placeholder="E.G. TEA GARDEN PATROL ROUTE"
                 value={workAddress}
                 onChange={(e) => setWorkAddress(e.target.value)}
               />
             </div>
 
             <div>
-              <label className="label">
-                Safety Warning Radius: <strong>{alertRadiusKm} km</strong>
+              <label className="label" style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>SAFETY WARNING RADIUS</span>
+                <span className="mono-code" style={{ color: "var(--amber-text)" }}>{alertRadiusKm} KM</span>
               </label>
               <input
                 type="range"
                 min="1"
                 max="15"
                 step="0.5"
-                style={{ width: "100%", accentColor: "var(--accent)" }}
+                style={{ width: "100%", accentColor: "var(--accent-link)" }}
                 value={alertRadiusKm}
                 onChange={(e) => setAlertRadiusKm(e.target.value)}
               />
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                Alerts will trigger on your dashboard when active incidents occur within this radius.
+              <span className="mono-code" style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "4px", display: "block" }}>
+                ACTIVE THREAT ADVISORIES WILL TRIGGER WHEN INCIDENTS OCCUR WITHIN THIS PERIMETER.
               </span>
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={saving}>
-              {saving ? "Saving..." : "Save Safety Geofence"}
+              <Sliders size={13} /> {saving ? "SAVING..." : "UPDATE SAFETY GEOFENCE"}
             </button>
           </form>
         </div>
 
         {/* Right Column: Contributor Badges & Reputation */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          <div className="card" style={{ padding: "1.75rem", textAlign: "center", borderTop: "5px solid #fbbf24" }}>
-            <div style={{ fontSize: "3.5rem", marginBottom: "8px" }}>🎖️</div>
-            <span className="trust-badge community" style={{ fontSize: "0.85rem" }}>
-              {profile?.badge_title || "Community Watcher"}
-            </span>
-            <h2 style={{ fontSize: "2rem", margin: "12px 0 4px" }}>
-              {profile?.reputation_score || 10} Points
-            </h2>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", margin: 0 }}>
-              Community Contributor Reputation
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div className="card" style={{ padding: "1.5rem", textAlign: "center", borderTop: "3px solid var(--amber-text)" }}>
+            <Award size={36} style={{ color: "var(--amber-text)", marginBottom: "8px" }} />
+            <div style={{ marginBottom: "6px" }}>
+              <span className="trust-badge community">
+                {profile?.badge_title || "COMMUNITY WATCHER"}
+              </span>
+            </div>
+            <div className="mono-code" style={{ fontSize: "2.2rem", fontWeight: 700, color: "var(--text-primary)", margin: "4px 0" }}>
+              {profile?.reputation_score || 10} PTS
+            </div>
+            <p className="mono-label" style={{ margin: 0 }}>
+              CONTRIBUTOR REPUTATION SCORE
             </p>
           </div>
 
-          <div className="card" style={{ padding: "1.5rem" }}>
-            <h3 style={{ margin: "0 0 1rem" }}>🏅 Reputation Ranks</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "0.85rem" }}>
+          <div className="card" style={{ padding: "1.25rem" }}>
+            <div className="mono-label" style={{ marginBottom: "12px" }}>REPUTATION RANKS</div>
+            <div className="mono-code" style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", opacity: profile?.reputation_score >= 10 ? 1 : 0.4 }}>
-                <span>🌱 Community Watcher</span>
-                <strong>10 pts</strong>
+                <span>🌱 COMMUNITY WATCHER</span>
+                <strong>10 PTS</strong>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", opacity: profile?.reputation_score >= 25 ? 1 : 0.4 }}>
-                <span>🔍 Verified Scout</span>
-                <strong>25 pts</strong>
+                <span>🔍 VERIFIED SCOUT</span>
+                <strong>25 PTS</strong>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", opacity: profile?.reputation_score >= 50 ? 1 : 0.4 }}>
-                <span>🛡️ Forest Sentinel</span>
-                <strong>50 pts</strong>
+                <span>🛡️ FOREST SENTINEL</span>
+                <strong>50 PTS</strong>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", opacity: profile?.reputation_score >= 100 ? 1 : 0.4 }}>
-                <span>👑 Master Guardian</span>
-                <strong>100 pts</strong>
+                <span>👑 MASTER GUARDIAN</span>
+                <strong>100 PTS</strong>
               </div>
             </div>
           </div>

@@ -2,7 +2,20 @@
 
 import { useEffect, useState } from "react";
 import TrustBadge from "@/components/TrustBadge";
-import { getEvents, createAuthorityBroadcast, getAuthorityBroadcasts, updateAuthorityStatus } from "@/lib/api";
+import {
+  getEvents,
+  createAuthorityBroadcast,
+  getAuthorityBroadcasts,
+  updateAuthorityStatus,
+} from "@/lib/api";
+import {
+  Radio,
+  AlertOctagon,
+  ShieldCheck,
+  Send,
+  Building,
+  ListFilter,
+} from "lucide-react";
 
 export default function AuthorityPage() {
   const [events, setEvents] = useState([]);
@@ -72,59 +85,64 @@ export default function AuthorityPage() {
   return (
     <div className="page-container">
       <div className="section-header">
-        <h1>🛡️ Forest Authority Collaboration Workspace</h1>
-        <p>Command center for official verifications, response teams, and public advisory broadcasts</p>
+        <h1>
+          <Building size={18} style={{ marginRight: "6px", verticalAlign: "middle" }} />
+          FOREST AUTHORITY COLLABORATION DESK
+        </h1>
+        <p>Official incident verifications, emergency advisories, and QRT dispatches</p>
       </div>
 
-      <div className="alert-detail-grid" style={{ marginBottom: "3rem" }}>
+      <div className="alert-detail-grid" style={{ marginBottom: "2.5rem" }}>
         {/* Broadcast Form */}
-        <div className="card" style={{ padding: "1.75rem", borderLeft: "5px solid #34d399" }}>
-          <h2 style={{ margin: "0 0 8px", color: "#34d399" }}>📢 Broadcast Official Advisory</h2>
-          <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
-            Publish official announcements and restricted zone warnings to all community dashboards.
+        <div className="card" style={{ padding: "1.25rem", borderLeft: "4px solid var(--sage-text)" }}>
+          <div className="mono-label" style={{ color: "var(--sage-text)", marginBottom: "6px" }}>
+            PUBLIC EMERGENCY ADVISORY DISPATCH
+          </div>
+          <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "1.25rem" }}>
+            Publish official advisories and danger zones to community dashboards.
           </p>
 
-          <form onSubmit={handleBroadcastSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          <form onSubmit={handleBroadcastSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
             <div>
-              <label className="label">Advisory Title</label>
+              <label className="label">ADVISORY TITLE</label>
               <input
                 type="text"
                 className="input"
                 required
-                placeholder="e.g. HIGH ALERT: Elephant Herd Crossing Eastern Highway"
+                placeholder="E.G. HIGH ALERT: ELEPHANT HERD CROSSING EASTERN HIGHWAY"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
 
             <div>
-              <label className="label">Advisory Message & Instructions</label>
+              <label className="label">MESSAGE & DIRECTIVES</label>
               <textarea
                 className="input"
                 rows={3}
                 required
-                placeholder="Official instructions for residents and commuters..."
+                placeholder="Official directives for sector residents..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }}>
               <div>
-                <label className="label">Severity Level</label>
+                <label className="label">SEVERITY LEVEL</label>
                 <select className="input" value={severity} onChange={(e) => setSeverity(e.target.value)}>
-                  <option value="info">Info Advisory</option>
-                  <option value="warning">Warning Notice</option>
+                  <option value="info">INFO ADVISORY</option>
+                  <option value="warning">WARNING NOTICE</option>
                   <option value="critical">CRITICAL EMERGENCY</option>
                 </select>
               </div>
 
               <div>
-                <label className="label">Restricted Danger Zone</label>
+                <label className="label">RESTRICTED ZONE</label>
                 <input
                   type="text"
                   className="input"
-                  placeholder="e.g. Sector 4 Forest Boundary"
+                  placeholder="E.G. SECTOR 4 BOUNDARY"
                   value={restrictedZone}
                   onChange={(e) => setRestrictedZone(e.target.value)}
                 />
@@ -132,35 +150,39 @@ export default function AuthorityPage() {
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={submitting}>
-              {submitting ? "Broadcasting..." : "Publish Emergency Broadcast"}
+              <Send size={13} /> {submitting ? "BROADCASTING..." : "PUBLISH ADVISORY"}
             </button>
           </form>
         </div>
 
         {/* Active Broadcasts Feed */}
         <div>
-          <h2 style={{ margin: "0 0 1rem" }}>📡 Active Official Broadcasts</h2>
+          <div className="section-header" style={{ marginBottom: "1rem" }}>
+            <h2><Radio size={16} inline style={{ marginRight: "6px" }} /> ACTIVE OFFICIAL BROADCASTS</h2>
+          </div>
           {broadcasts.length === 0 ? (
-            <div className="empty-state" style={{ padding: "2rem" }}>
-              <p>No active broadcasts issued.</p>
+            <div className="empty-state">
+              <p className="mono-code">NO ACTIVE ADVISORIES ISSUED.</p>
             </div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
               {broadcasts.map((b) => (
-                <div key={b.broadcast_id} className="card" style={{ padding: "1.25rem" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                    <span className="status-pill verified">● {b.severity.toUpperCase()}</span>
-                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      {b.created_at ? new Date(b.created_at).toLocaleString() : "Recently"}
+                <div key={b.broadcast_id} className="card" style={{ padding: "1rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span className="status-pill verified">
+                      <ShieldCheck size={11} /> {b.severity.toUpperCase()}
+                    </span>
+                    <span className="mono-code" style={{ fontSize: "11px" }}>
+                      {b.created_at ? new Date(b.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }) : "LOGGED"}
                     </span>
                   </div>
-                  <h3 style={{ margin: "0 0 6px", fontSize: "1.1rem" }}>{b.title}</h3>
-                  <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+                  <h3 style={{ margin: "4px 0", fontSize: "13px", fontWeight: 600 }}>{b.title}</h3>
+                  <p style={{ margin: 0, fontSize: "12px", color: "var(--text-secondary)" }}>
                     {b.message}
                   </p>
                   {b.restricted_zone && (
-                    <div style={{ marginTop: "8px", fontSize: "0.8rem", color: "#f87171" }}>
-                      ⛔ Restricted Area: {b.restricted_zone}
+                    <div className="mono-code" style={{ marginTop: "6px", fontSize: "11px", color: "var(--red-text)" }}>
+                      ⛔ RESTRICTED ZONE: {b.restricted_zone}
                     </div>
                   )}
                 </div>
@@ -171,39 +193,44 @@ export default function AuthorityPage() {
       </div>
 
       {/* Incidents Management Table */}
-      <h2 style={{ marginBottom: "1rem" }}>📋 Incident Verification & Dispatch Portal</h2>
+      <div className="section-header" style={{ marginBottom: "1rem" }}>
+        <h2><ListFilter size={16} inline style={{ marginRight: "6px" }} /> INCIDENT VERIFICATION & TEAM DISPATCH</h2>
+      </div>
       {loading ? (
         <div className="spinner" />
       ) : (
-        <div className="card" style={{ padding: "1.25rem", overflowX: "auto" }}>
+        <div className="card" style={{ padding: "1rem", overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid var(--border)", color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                <th style={{ padding: "12px" }}>Incident</th>
-                <th style={{ padding: "12px" }}>Species</th>
-                <th style={{ padding: "12px" }}>Status</th>
-                <th style={{ padding: "12px" }}>Trust Score</th>
-                <th style={{ padding: "12px" }}>Action</th>
+              <tr className="mono-label" style={{ borderBottom: "1px solid var(--border)", paddingBottom: "8px" }}>
+                <th style={{ padding: "8px 12px" }}>INCIDENT ID</th>
+                <th style={{ padding: "8px 12px" }}>SPECIES</th>
+                <th style={{ padding: "8px 12px" }}>STATUS</th>
+                <th style={{ padding: "8px 12px" }}>TRUST SCORE</th>
+                <th style={{ padding: "8px 12px" }}>DISPATCH ACTION</th>
               </tr>
             </thead>
             <tbody>
               {events.map((ev) => (
-                <tr key={ev.event_id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                  <td style={{ padding: "12px", fontWeight: 600 }}>{ev.title}</td>
-                  <td style={{ padding: "12px" }}>{ev.species}</td>
-                  <td style={{ padding: "12px" }}>
+                <tr key={ev.event_id} style={{ borderBottom: "1px solid var(--border)" }}>
+                  <td style={{ padding: "10px 12px" }}>
+                    <div style={{ fontWeight: 600 }}>{ev.title}</div>
+                    <div className="mono-code" style={{ fontSize: "11px" }}>EVT-0824#{ev.event_id}</div>
+                  </td>
+                  <td style={{ padding: "10px 12px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontSize: "12px" }}>{ev.species}</td>
+                  <td style={{ padding: "10px 12px" }}>
                     <span className={`status-pill ${ev.status}`}>{ev.status}</span>
                   </td>
-                  <td style={{ padding: "12px" }}>
+                  <td style={{ padding: "10px 12px" }}>
                     <TrustBadge status={ev.verification_status} score={ev.trust_score} />
                   </td>
-                  <td style={{ padding: "12px" }}>
+                  <td style={{ padding: "10px 12px" }}>
                     <button
                       onClick={() => handleQuickVerify(ev.event_id)}
                       className="btn btn-outline"
-                      style={{ fontSize: "0.75rem", padding: "4px 10px" }}
+                      style={{ fontSize: "11px", padding: "4px 8px" }}
                     >
-                      Dispatch QRT Team
+                      <AlertOctagon size={11} /> DISPATCH QRT
                     </button>
                   </td>
                 </tr>

@@ -3,6 +3,16 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Shield,
+  Radio,
+  FileText,
+  BookOpen,
+  Camera,
+  User,
+  LogOut,
+  Activity,
+} from "lucide-react";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -29,35 +39,60 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-inner">
         <Link href="/" className="navbar-brand">
-          🛡️ <span>Wild Guard</span>
+          <Shield size={18} style={{ color: "var(--accent-link)" }} />
+          WILD<span>GUARD</span>
         </Link>
 
         <div className="navbar-links">
-          <Link href="/">Dashboard</Link>
-          <Link href="/events">Live Events</Link>
-          <Link href="/intelligence">Stories</Link>
-          <Link href="/safety-guides">Safety Guides</Link>
+          <Link href="/">
+            <Activity size={14} /> Dashboard
+          </Link>
+          <Link href="/events">
+            <Radio size={14} /> Live Events
+          </Link>
+          <Link href="/intelligence">
+            <FileText size={14} /> Stories
+          </Link>
+          <Link href="/safety-guides">
+            <BookOpen size={14} /> Safety Guides
+          </Link>
 
           {user ? (
             <>
               {user.role === "admin" ? (
-                <Link href="/authority" style={{ color: "#34d399", fontWeight: 700 }}>
-                  🛡️ Authority Portal
+                <Link
+                  href="/authority"
+                  style={{ color: "var(--sage-text)", fontWeight: 600 }}
+                >
+                  <Shield size={14} /> Authority Portal
                 </Link>
               ) : (
                 <>
                   <Link href="/upload" className="nav-btn-primary">
-                    📸 Quick Report
+                    <Camera size={14} /> Quick Report
                   </Link>
-                  <Link href="/profile">Profile</Link>
+                  <Link href="/profile">
+                    <User size={14} /> Profile
+                  </Link>
                 </>
               )}
 
-              <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginLeft: "6px" }}>
+              <span
+                className="mono-code"
+                style={{
+                  color: "var(--text-secondary)",
+                  marginLeft: "8px",
+                  fontSize: "12px",
+                }}
+              >
                 {user.name}
               </span>
-              <button onClick={logout} className="btn btn-outline" style={{ padding: "6px 12px", fontSize: "0.8rem" }}>
-                Logout
+              <button
+                onClick={logout}
+                className="btn btn-outline"
+                style={{ padding: "4px 10px", fontSize: "12px" }}
+              >
+                <LogOut size={13} /> Logout
               </button>
             </>
           ) : (

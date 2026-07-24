@@ -6,6 +6,16 @@ import dynamic from "next/dynamic";
 import TrustBadge from "@/components/TrustBadge";
 import EventTimeline from "@/components/EventTimeline";
 import { getEventDetail, submitConfirmation, updateAuthorityStatus } from "@/lib/api";
+import {
+  MapPin,
+  Compass,
+  FileText,
+  CheckCircle2,
+  ShieldAlert,
+  Send,
+  Eye,
+  Layers,
+} from "lucide-react";
 
 const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
@@ -86,8 +96,8 @@ export default function EventDetailPage() {
   if (error || !eventData) {
     return (
       <div className="page-container empty-state">
-        <h3>Wildlife Event Not Found</h3>
-        <p>{error}</p>
+        <h3>WILDLIFE EVENT RECORD NOT FOUND</h3>
+        <p className="mono-code">{error}</p>
       </div>
     );
   }
@@ -98,9 +108,9 @@ export default function EventDetailPage() {
       <div
         className="card"
         style={{
-          padding: "2rem",
-          marginBottom: "2rem",
-          borderLeft: "6px solid var(--accent)",
+          padding: "1.25rem 1.5rem",
+          marginBottom: "1.5rem",
+          borderLeft: "4px solid var(--accent)",
         }}
       >
         <div
@@ -113,29 +123,33 @@ export default function EventDetailPage() {
           }}
         >
           <div>
-            <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "8px" }}>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "6px" }}>
+              <span className="mono-code" style={{ color: "var(--text-secondary)", fontWeight: 600 }}>
+                EVT-0824#{eventData.event_id}
+              </span>
               <span className={`status-pill ${eventData.status}`}>
-                ● {eventData.status.replace("_", " ").toUpperCase()}
+                {eventData.status.replace("_", " ")}
               </span>
               <TrustBadge status={eventData.verification_status} score={eventData.trust_score} />
             </div>
-            <h1 style={{ fontSize: "2rem", margin: 0 }}>{eventData.title}</h1>
-            <p style={{ color: "var(--text-secondary)", margin: "4px 0 0" }}>
-              Species: <strong>{eventData.species}</strong> &bull; Total Verified Sightings: <strong>{eventData.sighting_count}</strong>
+            <h1 style={{ fontSize: "1.5rem", margin: 0, fontWeight: 700 }}>{eventData.title}</h1>
+            <p className="mono-code" style={{ color: "var(--text-secondary)", margin: "4px 0 0", fontSize: "12px" }}>
+              SPECIES: {eventData.species.toUpperCase()} | VERIFIED SIGHTINGS: {eventData.sighting_count}
             </p>
           </div>
 
           <div
             style={{
-              background: "rgba(255,255,255,0.04)",
-              padding: "1rem 1.25rem",
-              borderRadius: "10px",
+              background: "var(--bg-primary)",
+              padding: "0.75rem 1rem",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-sm)",
               textAlign: "right",
             }}
           >
-            <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>Current Direction</div>
-            <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#fbbf24" }}>
-              🧭 {eventData.movement_direction || "Unknown"}
+            <div className="mono-label">MOVEMENT VECTOR</div>
+            <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--amber-text)", display: "flex", alignItems: "center", gap: "4px" }}>
+              <Compass size={14} /> {eventData.movement_direction || "UNKNOWN"}
             </div>
           </div>
         </div>
@@ -145,15 +159,15 @@ export default function EventDetailPage() {
         {/* Left Column: Timeline & Map */}
         <div>
           <div className="section-header">
-            <h2>📍 Event Location Map</h2>
+            <h2><MapPin size={16} inline style={{ marginRight: "6px" }} /> GEOSPATIAL MAP</h2>
           </div>
-          <div className="map-container" style={{ height: "350px", marginBottom: "2rem" }}>
+          <div className="map-container" style={{ height: "320px", marginBottom: "1.5rem" }}>
             <Map latitude={eventData.latitude} longitude={eventData.longitude} animal={eventData.species} />
           </div>
 
           <div className="section-header">
-            <h2>📜 Chronological Event Timeline</h2>
-            <p>Milestones logged by system AI, community sightings, and forest officers</p>
+            <h2><Layers size={16} inline style={{ marginRight: "6px" }} /> INCIDENT CHRONOLOGY TIMELINE</h2>
+            <p>System AI detections, community reports, and official actions</p>
           </div>
           <EventTimeline timelines={eventData.timelines} />
         </div>
@@ -161,54 +175,54 @@ export default function EventDetailPage() {
         {/* Right Column: Community Confirmation Form & Authority Tools */}
         <div>
           {/* Community Confirmation Form */}
-          <div className="card" style={{ padding: "1.5rem", marginBottom: "2rem" }}>
-            <h3 style={{ margin: "0 0 8px", color: "var(--accent)" }}>
-              🤝 Contribute Sighting Update
-            </h3>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginBottom: "1.25rem" }}>
-              Verify this incident to earn contributor reputation points and keep your community informed.
+          <div className="card" style={{ padding: "1.25rem", marginBottom: "1.5rem" }}>
+            <div className="mono-label" style={{ marginBottom: "6px", color: "var(--accent-link)" }}>
+              CONTRIBUTE FIELD SIGHTING
+            </div>
+            <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "1rem" }}>
+              Submit verified field observations to update the incident vector and earn contributor reputation.
             </p>
 
-            <form onSubmit={handleConfirmationSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <form onSubmit={handleConfirmationSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
               <div>
-                <label className="label" style={{ fontSize: "0.85rem" }}>Current Status</label>
+                <label className="label">OBSERVED STATUS</label>
                 <select
                   className="input"
                   value={statusUpdate}
                   onChange={(e) => setStatusUpdate(e.target.value)}
                 >
-                  <option value="still_present">🐾 Animal Still Present</option>
-                  <option value="moved">🏃 Animal Moving/Direction Changed</option>
-                  <option value="no_longer_visible">🌲 Animal No Longer Visible</option>
+                  <option value="still_present">ANIMAL STILL PRESENT</option>
+                  <option value="moved">ANIMAL MOVED / VECTOR CHANGED</option>
+                  <option value="no_longer_visible">ANIMAL NO LONGER VISIBLE</option>
                 </select>
               </div>
 
               <div>
-                <label className="label" style={{ fontSize: "0.85rem" }}>Observed Direction of Movement</label>
+                <label className="label">MOVEMENT DIRECTION</label>
                 <select
                   className="input"
                   value={direction}
                   onChange={(e) => setDirection(e.target.value)}
                 >
-                  <option value="North">North</option>
-                  <option value="North-East">North-East</option>
-                  <option value="East">East</option>
-                  <option value="South-East">South-East</option>
-                  <option value="South">South</option>
-                  <option value="South-West">South-West</option>
-                  <option value="West">West</option>
-                  <option value="North-West">North-West</option>
-                  <option value="Toward Forest Boundary">Toward Forest Boundary</option>
-                  <option value="Toward River Bed">Toward River Bed</option>
+                  <option value="North">NORTH</option>
+                  <option value="North-East">NORTH-EAST</option>
+                  <option value="East">EAST</option>
+                  <option value="South-East">SOUTH-EAST</option>
+                  <option value="South">SOUTH</option>
+                  <option value="South-West">SOUTH-WEST</option>
+                  <option value="West">WEST</option>
+                  <option value="North-West">NORTH-WEST</option>
+                  <option value="Toward Forest Boundary">TOWARD FOREST BOUNDARY</option>
+                  <option value="Toward River Bed">TOWARD RIVER BED</option>
                 </select>
               </div>
 
               <div>
-                <label className="label" style={{ fontSize: "0.85rem" }}>Additional Field Notes</label>
+                <label className="label">FIELD NOTES & OBSERVATIONS</label>
                 <textarea
                   className="input"
                   rows={3}
-                  placeholder="e.g. Heard elephant calls near eastern teagarden, moving slowly..."
+                  placeholder="e.g. Sighting confirmed near Eastern teagarden perimeter..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
@@ -220,7 +234,7 @@ export default function EventDetailPage() {
                 disabled={submitting}
                 style={{ width: "100%" }}
               >
-                {submitting ? "Submitting..." : "Submit Verified Sighting"}
+                <Send size={13} /> {submitting ? "SUBMITTING..." : "SUBMIT SIGHTING LOG"}
               </button>
             </form>
           </div>
@@ -230,39 +244,39 @@ export default function EventDetailPage() {
             <div
               className="card"
               style={{
-                padding: "1.5rem",
-                border: "1px solid #34d399",
-                background: "rgba(52, 211, 153, 0.05)",
+                padding: "1.25rem",
+                border: "1px solid var(--sage-border)",
+                background: "var(--sage-bg)",
               }}
             >
-              <h3 style={{ margin: "0 0 8px", color: "#34d399" }}>
-                🛡️ Forest Officer Incident Management
-              </h3>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginBottom: "1rem" }}>
-                Official verification upgrades trust rating to 98% (Authority Verified).
+              <div className="mono-label" style={{ marginBottom: "6px", color: "var(--sage-text)" }}>
+                FOREST OFFICER COMMAND DESK
+              </div>
+              <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "1rem" }}>
+                Official verification upgrades incident credibility to AUTH-VERIF (98%).
               </p>
 
-              <form onSubmit={handleAdminStatusSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <form onSubmit={handleAdminStatusSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
                 <div>
-                  <label className="label" style={{ fontSize: "0.85rem" }}>Set Incident Status</label>
+                  <label className="label">SET INCIDENT STATUS</label>
                   <select
                     className="input"
                     value={adminStatus}
                     onChange={(e) => setAdminStatus(e.target.value)}
                   >
-                    <option value="verified">Verified (Active Monitoring)</option>
-                    <option value="response_in_progress">Response Team Dispatched</option>
-                    <option value="monitoring">Monitoring (Lower Risk)</option>
-                    <option value="resolved">Resolved (Safe Area)</option>
+                    <option value="verified">VERIFIED (ACTIVE MONITORING)</option>
+                    <option value="response_in_progress">RESPONSE TEAM DISPATCHED</option>
+                    <option value="monitoring">MONITORING (LOWER RISK)</option>
+                    <option value="resolved">RESOLVED (AREA SAFE)</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="label" style={{ fontSize: "0.85rem" }}>Official Instructions / Note</label>
+                  <label className="label">OFFICIAL DIRECTIVE / NOTE</label>
                   <input
                     type="text"
                     className="input"
-                    placeholder="e.g. QRT Team 2 dispatched with sirens. Stay indoors."
+                    placeholder="e.g. QRT Unit 2 deployed for border siren alert."
                     value={adminNotes}
                     onChange={(e) => setAdminNotes(e.target.value)}
                   />
@@ -272,9 +286,9 @@ export default function EventDetailPage() {
                   type="submit"
                   className="btn btn-outline"
                   disabled={submitting}
-                  style={{ borderColor: "#34d399", color: "#34d399" }}
+                  style={{ borderColor: "var(--sage-text)", color: "var(--sage-text)" }}
                 >
-                  Publish Official Update & Verify
+                  <ShieldAlert size={13} /> PUBLISH DIRECTIVE & VERIFY
                 </button>
               </form>
             </div>
